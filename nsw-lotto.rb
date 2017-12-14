@@ -243,7 +243,7 @@ class LottoDraw
     Dir.mkdir @path + "/site" if !File.directory?  @path + "/site"
     path = File.join @path, "site"
     Dir.mkdir path + "/history" if !File.directory?  path + "/history"
-    %x(cp '#{File.join(path, "index.html")}' '#{File.join(path, "/history/index-#@date.html")}') if File.exists?(File.join(path, "index.html"))
+    #%x(cp '#{File.join(path, "index.html")}' '#{File.join(path, "/history/index-#@date.html")}') if File.exists?(File.join(path, "index.html"))
     @date = Time.now
     File.open(File.join(path, "index.html"), "w") do |f|
       f.write(render)
