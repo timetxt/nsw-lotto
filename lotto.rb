@@ -42,9 +42,9 @@ class NSWLott
             temp_selected = template["powerball"]
         else
             #exit
-            #temp_selected = template["ozlotto"]
+            temp_selected = template["ozlotto"]
             #temp_selected = template["powerball"]
-            temp_selected = template["monwessat"]
+            #temp_selected = template["monwessat"]
         end
         @lotto_type = temp_selected["type"]
         return temp_selected
@@ -181,7 +181,8 @@ class NSWLott
         Dir.mkdir @path + "/site" if !File.directory? @path + "/site"
         path = File.join @path, "site"
         Dir.mkdir path + "/history" if !File.directory? path + "/history"
-        #%x(cp '#{File.join(path, "index.html")}' '#{File.join(path, "/history/index-#@date.html")}') if File.exists?(File.join(path, "index.html"))
+        @date = @date.strftime("%Y-%m-%d-%H-%M-%S")
+        %x(cp '#{File.join(path, "index.html")}' '#{File.join(path, "/history/index-#@date.html")}') if File.exists?(File.join(path, "index.html"))
         File.open(File.join(path, "index.html"), "w") do |f|
             f.write(loadERB)
         end
