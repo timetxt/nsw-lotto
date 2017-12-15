@@ -25,13 +25,16 @@ end
 def templateSelect(template)
   today = Time.now
   if today.monday? or today.wednesday? or today.saturday?
-      temp_selected = template["montuesat"]
+      temp_selected = template["monwessat"]
   elsif today.tuesday?
       temp_selected = template["ozlotto"]
   elsif today.thursday?
       temp_selected = template["powerball"]
   else
-      temp_selected = false
+      #exit
+      #temp_selected = template["ozlotto"]
+      #temp_selected = template["powerball"]
+      temp_selected = template["monwessat"]
   end
   return temp_selected
 end
@@ -96,8 +99,8 @@ def ratio_check(result, template, draws)
      #end
    end
 
-   ratio_main_sorted = ratio_main.sort_by(&:last)
-   ratio_supps_sorted = ratio_supps.sort_by(&:last)
+   ratio_main_sorted = ratio_main.sort_by(&:last) if ratio_main
+   ratio_supps_sorted = ratio_supps.sort_by(&:last) if ratio_supps
 
 
    main_5_digits = Array.new
@@ -122,20 +125,7 @@ def ratio_check(result, template, draws)
      main[i] += ["#{x}"]
      i += 1
    end
-   puts "#{main}"
-
-   found = Array.new
-   result.each do |x|
-     check = 0 
-     main.each do |m|
-       if x.include? m
-         check += 1
-       else
-         check = 0
-       end
-     end
-     found << x
-   end
+   return main
 end
 
 def massiveDraw(template_selected,draw)
@@ -151,9 +141,33 @@ def massiveDraw(template_selected,draw)
 end
 
 #test.each {|x| puts "#{x}"}
-template = loadPoolTemplate
-template_selected = templateSelect(template)
-draw = 100000
-test = massiveDraw(template_selected,draw)
-ratio_check(test, template_selected, draw)
+def drawTicket
+  template = loadPoolTemplate
+  template_selected = templateSelect(template)
+  draw = 10000
+  test = massiveDraw(template_selected,draw)
+  result = ratio_check(test, template_selected, draw)
+  puts "#{result}"
+  return result
+end
 
+ticket = Array.new
+(1..5).each do |x|
+  drawTicket.each do |draw|
+    ticket << draw
+  end
+end
+
+puts "ticket has #{ticket.length} draws:\n#{ticket}"
+
+path = File.dirname File.absolute_path __FILE__
+file = File.read(File.join(path, "index.html.erb"))
+ERB.new(@file).result(binding)
+
+Dir.mkdir path + "/site" if !File.directory? path + "/site"
+path = File.join path, "site"
+Dir.mkdir path + "/history" if !File.directory? path + "/history"
+#%x(cp '#{File.join(path, "index.html")}' '#{File.join(path, "/history/index-#@date.html")}') if File.exists?(File.join(path, "index.html"))
+File.open(File.join(path, "index.html"), "w") do |f|
+  f.write(render)
+end

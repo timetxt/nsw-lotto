@@ -1,5 +1,6 @@
 {
     "powerball": {
+        "type": "PowerBall",
         "mainpool": 45,
         "suppspool": 20,
         "main": 6,
@@ -7,6 +8,7 @@
         "winning": 7
     },
     "ozlotto": {
+        "type": "OZLotto",
         "mainpool": 45,
         "suppspool": 0,
         "main": 7,
@@ -14,11 +16,12 @@
         "winning": 7
     },
     "monwessat": {
+        "type": "Monday/Wednesday/Saturday",
         "mainpool": 45,
         "suppspool": 0,
-        "main": 7,
+        "main": 6,
         "supps": 0,
-        "winning": 7
+        "winning": 6
     }
 }
 

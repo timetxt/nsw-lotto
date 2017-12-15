@@ -11,79 +11,16 @@
 </style>
 </head>
 <body>
-<h1>This Is Predicting Result of NSW <%= @lotto_type %></h1>
+<h1>This Is Predicting Result of NSW <%= @lotto_type %> Lotto</h1>
 <p>The results are as following:</p>
 <ol>
-<% @draw_result.each do |result| %>
+<% @ticket.each do |result| %>
 <li><%= result %></li>
 <% end %>
 </ol>
 <br />
 <br />
 
-<p>Number Odds:</p>
-<% if !@main_num_check.empty? %>
-<p> Picked more than 4 times </p>
-<% @mainresult.each { |x,y| %>
-<% if y >= 4 %>
-<p><%= x %></p>
-<% end %>
-<% } %>
-<p>------------</p>
-<p> Picked 3 times </p>
-<% @mainresult.each { |x,y| %>
-<% if y == 3 %>
-<p><%= x %></p>
-<% end %>
-<% } %>
-<p>------------</p>
-<p> Picked 2 times </p>
-<% @mainresult.each { |x,y| %>
-<% if y == 2 %>
-<p><%= x %></p>
-<% end %>
-<% } %>
-<p>------------</p>
-<p> Picked 1 times </p>
-<% @mainresult.each { |x,y| %>
-<% if y == 1 %>
-<p><%= x %></p>
-<% end %>
-<% } %>
-<% end%>
-<p>------------</li>
-
-
-<% if !@supp_num_check.empty? %>
-<p> Picked more than 4 times </p>
-<% @suppresult.each { |x,y| %>
-<% if y >= 4 %>
-<p><%= x %></p>
-<% end %>
-<% } %>
-<p>------------</p>
-<p> Picked 3 times </p>
-<% @suppresult.each { |x,y| %>
-<% if y == 3 %>
-<p><%= x %></p>
-<% end %>
-<% } %>
-<p>------------</p>
-<p> Picked 2 times </p>
-<% @suppresult.each { |x,y| %>
-<% if y == 2 %>
-<p><%= x %></p>
-<% end %>
-<% } %>
-<p>------------</p>
-<p> Picked 1 times </p>
-<% @suppresult.each do |x,y| %>
-<% if y == 1 %>
-<p><%= x %></p>
-<% end %>
-<% end %>
-<% end %>
-<p>------------</p>
 
 <p> reuslt is drawn automatically at <%= @date %></p>
 <p> The predicting reuslt will update 35 minutes before the close time of the day's lotto</p>
