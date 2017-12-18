@@ -1,0 +1,35 @@
+main.cf:
+
+myhostname = yourdomain.com
+mydomain = $myhostname
+
+
+# enable SASL authentication
+smtp_sasl_auth_enable = yes
+# tell Postfix where the credentials are stored
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_security_options = noanonymous
+# use STARTTLS for encryption
+smtp_use_tls = yes
+relayhost = [smtp-relay.gmail.com]:587
+smtp_tls_CAfile = /etc/ssl/certs/ca-bundle.crt
+
+mydestination = localhost.localdomain, localhost
+
+
+
+sasl_passwd:
+
+[smtp-relay.gmail.com]:587 yourname@yourdomain.com:<gmail app special password>
+
+generate the app password in your email address admin portal.
+
+link: https://myaccount.google.com/security?pli=1
+
+save&run
+
+chown root:root ./sasl_passwd
+chmod 0600 ./sasl_passwd
+
+
+run: /etc/init.d/postfix stop && /etc/init.d/postfix start
