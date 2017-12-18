@@ -15,6 +15,7 @@
 require "json"
 require "securerandom"
 require "erb"
+require "net/smtp"
 
 class NSWLott
     def initialize
@@ -189,6 +190,79 @@ class NSWLott
     end
 end
 
+
+class Email
+
+  def loadHtml
+    begin 
+      path = File.dirname File.absolute_path __FILE__
+      folder = "site" 
+      directory = File.join path, folder
+      if File.exist? directory
+        file = File.join directory, "index.html"
+        if File.exists? file
+          content = File.read(file)
+        else
+          raise "File #{file} does not exist"
+        end
+      else
+        raise "Folder #{directory} does not exist"
+      end
+      return content
+    rescue => ex
+      puts "Script *FAILED*, Cause: #{ex.message}"
+    end
+  end
+
+  def loadRecipients
+    begin
+      path = File.dirname File.absolute_path __FILE__
+      mailist = "mailist"
+      file = File.join path, mailist
+      if File.exists? file
+        recipients = File.readlines(file)
+      else
+        raise "File #{file} does not exist" 
+      end
+      if recipients.empty?
+        recipients << "test@example.com"   # change this email address
+      else
+        recipients.collect! {|x| x.chop}
+      end
+      return recipients 
+    rescue => ex
+      puts "Script *FAILED*, Cause: #{ex.message}"
+    end
+  end
+end
+
+
+
+
 new_lotto_ticket = NSWLott.new
 new_lotto_ticket.generateGames
 new_lotto_ticket.outputHTML
+
+
+# send report as HTML email, mailist is at './mailist'
+newMail = Email.new
+
+html_body = newMail.loadHtml
+recipients = newMail.loadRecipients
+recipients.each do |recipient|
+message = <<MESSAGE_END
+From: <lotto@timetxt.com>
+To: <#{recipient}>
+MIME-Version: 1.0
+Content-type: text/html
+Subject: Lotto: Lotto Pickup result 
+
+#{html_body}
+
+MESSAGE_END
+
+Net::SMTP.start('localhost') do |smtp|
+  smtp.send_message message, 'lotto@timetxt', "#{recipient}"
+end
+end
+   
