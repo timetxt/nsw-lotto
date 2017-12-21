@@ -153,13 +153,20 @@ class NSWLott
             end
         end
 
+        #supps_digit = ["2","3"]
+
         if supps_digit
             with_supps = Array.new
             main.each do |m|
-                with_supps << m
-                with_supps << "supps: #{supps_digit[rand(0..supps_digit.length - 1)]}"
-                return with_supps
+                if !supps_digit.length.eql? 1
+                    supps_digit.each do |d|
+                        with_supps << m + ["supps: #{d}"]
+                    end
+                else
+                    with_supps << m + ["supps: #{supps_digit[0]}"]
+                end
             end
+            return with_supps
         else
             return main
         end
@@ -191,7 +198,7 @@ class NSWLott
     def generateGames
         (1..@games).each do |game|
             drawTicket.each do |draw|
-                @ticket << draw
+                @ticket += [draw]
             end
         end
     end
@@ -289,4 +296,3 @@ Net::SMTP.start('localhost') do |smtp|
   smtp.send_message message, 'lotto@timetxt', "#{recipient}"
 end
 end
-   
