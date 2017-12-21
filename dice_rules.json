@@ -1,7 +1,7 @@
 {
     "powerball": {
         "type": "PowerBall",
-        "mainpool": 45,
+        "mainpool": 40,
         "suppspool": 20,
         "main": 6,
         "supps": 1,

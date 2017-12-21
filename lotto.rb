@@ -108,15 +108,16 @@ class NSWLott
                 end
             end
         end
-
+        
         #ratio_supps.each do |k, v|
             #ratio_supps["#{k}"] = ((v.to_f / draws)*100).round(5)
-        ##end
+        #end
 
         
         ratio_main_sorted = ratio_main.sort_by(&:last) if ratio_main
         ratio_supps_sorted = ratio_supps.sort_by(&:last) if ratio_supps
-        
+
+
         main_digits = Array.new
         main_last_digit = Array.new
         
@@ -132,6 +133,7 @@ class NSWLott
             i += 1
         end
         
+
         main = Array.new
         j = 0
         main_last_digit.each do |x|
@@ -140,7 +142,28 @@ class NSWLott
             main[j] += ["#{x}"]
             j += 1
         end
-        return main
+        
+        if ratio_supps_sorted
+            supps_digit = Array.new
+
+            k = 0
+            while ratio_supps_sorted[ratio_supps_sorted.length - 1][1].eql? ratio_supps_sorted[ratio_supps_sorted.length - k -1][1]
+                supps_digit << ratio_supps_sorted[ratio_supps_sorted.length - k -1][0]
+                k += 1
+            end
+        end
+
+        if supps_digit
+            with_supps = Array.new
+            main.each do |m|
+                with_supps << m
+                with_supps << "supps: #{supps_digit[rand(0..supps_digit.length - 1)]}"
+                return with_supps
+            end
+        else
+            return main
+        end
+
     end
 
     def ratio_draw(template_selected,draw)
@@ -242,6 +265,7 @@ end
 new_lotto_ticket = NSWLott.new
 new_lotto_ticket.generateGames
 new_lotto_ticket.outputHTML
+
 
 
 # send report as HTML email, mailist is at './mailist'
